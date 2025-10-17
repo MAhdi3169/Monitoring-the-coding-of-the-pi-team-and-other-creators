@@ -1,0 +1,64 @@
+import time
+import random
+from datetime import datetime
+
+class PiTeamMonitor:
+    def __init__(self):
+        self.team_members = ["Alice", "Bob", "Charlie", "Diana", "Eve"]
+        self.projects = ["Web App", "Mobile App", "API Development", "Database Optimization", "AI Model"]
+        self.programming_languages = ["Python", "JavaScript", "Java", "C++", "Go", "Rust"]
+    
+    def get_random_activity(self):
+        activities = [
+            "committed new code",
+            "opened a pull request",
+            "merged changes to main branch",
+            "fixed bugs",
+            "wrote unit tests",
+            "refactored code",
+            "deployed new version",
+            "reviewed code",
+            "updated documentation",
+            "optimized performance"
+        ]
+        return random.choice(activities)
+    
+    def monitor_coding_activities(self):
+        print("🚀 Pi Team Coding Activity Monitor Started")
+        print("=" * 60)
+        
+        activity_count = 0
+        
+        while True:
+            # Simulate monitoring activities
+            member = random.choice(self.team_members)
+            project = random.choice(self.projects)
+            language = random.choice(self.programming_languages)
+            activity = self.get_random_activity()
+            
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            print(f"[{timestamp}] {member} {activity} on '{project}' using {language}")
+            
+            activity_count += 1
+            
+            # Show summary every 10 activities
+            if activity_count % 10 == 0:
+                print("\n" + "=" * 50)
+                print(f"📊 MONITORING SUMMARY: {activity_count} activities tracked")
+                print("=" * 50 + "\n")
+            
+            # Wait before next check
+            time.sleep(random.uniform(2, 5))
+
+def main():
+    monitor = PiTeamMonitor()
+    
+    try:
+        monitor.monitor_coding_activities()
+    except KeyboardInterrupt:
+        print("\n\n🛑 Monitoring stopped by user")
+        print("Thank you for using Pi Team Monitor!")
+
+if __name__ == "__main__":
+    main()
