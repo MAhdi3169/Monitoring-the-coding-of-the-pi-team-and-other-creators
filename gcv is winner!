@@ -1,0 +1,106 @@
+import time
+import random
+import json
+from datetime import datetime
+import logging
+
+class AdvancedPiTeamMonitor:
+    def __init__(self):
+        self.team_members = ["Alice", "Bob", "Charlie", "Diana", "Eve"]
+        self.projects = ["Web App", "Mobile App", "API Development", "Database Optimization", "AI Model"]
+        self.programming_languages = ["Python", "JavaScript", "Java", "C++", "Go", "Rust"]
+        self.setup_logging()
+    
+    def setup_logging(self):
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler('pi_team_monitor.log'),
+                logging.StreamHandler()
+            ]
+        )
+        self.logger = logging.getLogger('PiTeamMonitor')
+    
+    def generate_activity_data(self):
+        return {
+            'timestamp': datetime.now().isoformat(),
+            'team_member': random.choice(self.team_members),
+            'project': random.choice(self.projects),
+            'language': random.choice(self.programming_languages),
+            'activity': random.choice([
+                "code commit", "pull request", "code review", "bug fix", 
+                "testing", "deployment", "documentation", "refactoring"
+            ]),
+            'lines_of_code': random.randint(10, 500),
+            'complexity': random.choice(['low', 'medium', 'high'])
+        }
+    
+    def save_activity_to_json(self, activity):
+        try:
+            with open('coding_activities.json', 'a') as f:
+                f.write(json.dumps(activity) + '\n')
+        except Exception as e:
+            self.logger.error(f"Error saving activity: {e}")
+    
+    def display_activity(self, activity):
+        emoji = {
+            'code commit': '💾',
+            'pull request': '🔀',
+            'code review': '👀',
+            'bug fix': '🐛',
+            'testing': '🧪',
+            'deployment': '🚀',
+            'documentation': '📚',
+            'refactoring': '♻️'
+        }.get(activity['activity'], '📝')
+        
+        message = (
+            f"{emoji} [{activity['timestamp'][11:19]}] {activity['team_member']} - "
+            f"{activity['activity'].upper()} | Project: {activity['project']} | "
+            f"Language: {activity['language']} | Lines: {activity['lines_of_code']}"
+        )
+        
+        print(message)
+        self.logger.info(message)
+    
+    def start_monitoring(self):
+        print("🎯 ADVANCED PI TEAM CODING MONITOR")
+        print("📊 Tracking: Code commits, PRs, reviews, deployments, and more...")
+        print("💾 Logging to: pi_team_monitor.log & coding_activities.json")
+        print("=" * 70)
+        
+        activity_count = 0
+        
+        try:
+            while True:
+                activity_data = self.generate_activity_data()
+                self.display_activity(activity_data)
+                self.save_activity_to_json(activity_data)
+                
+                activity_count += 1
+                
+                # Show statistics every 15 activities
+                if activity_count % 15 == 0:
+                    self.show_statistics(activity_count)
+                
+                time.sleep(random.uniform(1, 3))
+                
+        except KeyboardInterrupt:
+            print(f"\n\n📈 MONITORING COMPLETED")
+            print(f"Total activities tracked: {activity_count}")
+            print("Data saved to: pi_team_monitor.log & coding_activities.json")
+    
+    def show_statistics(self, total_activities):
+        print("\n" + "=" * 50)
+        print(f"📈 REAL-TIME STATISTICS")
+        print(f"Total Activities Tracked: {total_activities}")
+        print(f"Current Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("=" * 50 + "\n")
+
+def main():
+    monitor = AdvancedPiTeamMonitor()
+    monitor.start_monitoring()
+
+if __name__ == "__main__":
+    main()
